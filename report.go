@@ -27,15 +27,24 @@ func (si *StreamInterval) String() string {
 }
 
 type StreamIntervalReport struct {
-	Socket           int     `json:"socket"`
-	StartInterval    float32 `json:"start"`
-	EndInterval      float32 `json:"end"`
-	Seconds          float32 `json:"seconds"`
-	Bytes            int     `json:"bytes"`
-	BitsPerSecond    float64 `json:"bits_per_second"`
-	Retransmissions  int     `json:"retransmissions"`
-	CongestionWindow int     `json:"congestion_window"`
-	Omitted          bool    `json:"omitted"`
+	Socket        int     `json:"socket"`
+	StartInterval float32 `json:"start"`
+	EndInterval   float32 `json:"end"`
+	Seconds       float32 `json:"seconds"`
+	Bytes         int     `json:"bytes"`
+	BitsPerSecond float64 `json:"bits_per_second"`
+	Omitted       bool    `json:"omitted"`
+
+	// TCP
+	Retransmissions  int `json:"retransmits"`
+	CongestionWindow int `json:"snd_cwnd"`
+	Rtt              int `json:"rtt"`
+
+	// UDP
+	JitterMs    float32 `json:"jitter_ms"`
+	LostPackets int     `json:"lost_packets"`
+	Packets     int     `json:"packets"`
+	Sender      bool    `json:"sender"`
 }
 
 func (sir *StreamIntervalReport) String() string {
@@ -60,6 +69,15 @@ type StreamIntervalSumReport struct {
 	Bytes         int     `json:"bytes"`
 	BitsPerSecond float64 `json:"bits_per_second"`
 	Omitted       bool    `json:"omitted"`
+
+	// TCP
+	Retransmissions int `json:"retransmits"`
+
+	// UDP
+	JitterMs    float32 `json:"jitter_ms"`
+	LostPackets int     `json:"lost_packets"`
+	Packets     int     `json:"packets"`
+	Sender      bool    `json:"sender"`
 }
 
 func (sisr *StreamIntervalSumReport) String() string {
@@ -110,6 +128,8 @@ type UdpStreamEndReport struct {
 	Packets       int     `json:"packets"`
 	LostPercent   float32 `json:"lost_percent"`
 	OutOfOrder    int     `json:"out_of_order"`
+	Omitted       bool    `json:"omitted"`
+	Sender        bool    `json:"sender"`
 }
 
 func (user *UdpStreamEndReport) String() string {
@@ -128,12 +148,17 @@ func (user *UdpStreamEndReport) String() string {
 }
 
 type TcpStreamEndReport struct {
-	Socket        int     `json:"socket"`
-	Start         float32 `json:"start"`
-	End           float32 `json:"end"`
-	Seconds       float32 `json:"seconds"`
-	Bytes         int     `json:"bytes"`
-	BitsPerSecond float64 `json:"bits_per_second"`
+	Socket          int     `json:"socket"`
+	Start           float32 `json:"start"`
+	End             float32 `json:"end"`
+	Seconds         float32 `json:"seconds"`
+	Bytes           int     `json:"bytes"`
+	BitsPerSecond   float64 `json:"bits_per_second"`
+	Retransmissions int     `json:"retransmits"`
+	MaxSndCwnd      int     `json:"max_snd_cwnd"`
+	MaxRtt          int     `json:"max_rtt"`
+	MinRtt          int     `json:"min_rtt"`
+	MeanRtt         int     `json:"mean_rtt"`
 }
 
 func (tser *TcpStreamEndReport) String() string {
@@ -152,11 +177,17 @@ func (tser *TcpStreamEndReport) String() string {
 }
 
 type StreamEndSumReport struct {
-	Start         float32 `json:"start"`
-	End           float32 `json:"end"`
-	Seconds       float32 `json:"seconds"`
-	Bytes         int     `json:"bytes"`
-	BitsPerSecond float64 `json:"bits_per_second"`
+	Start           float32 `json:"start"`
+	End             float32 `json:"end"`
+	Seconds         float32 `json:"seconds"`
+	Bytes           int     `json:"bytes"`
+	BitsPerSecond   float64 `json:"bits_per_second"`
+	Retransmissions int     `json:"retransmits"`
+	JitterMs        float32 `json:"jitter_ms"`
+	LostPackets     int     `json:"lost_packets"`
+	Packets         int     `json:"packets"`
+	LostPercent     float32 `json:"lost_percent"`
+	Sender          bool    `json:"sender"`
 }
 
 func (sesr *StreamEndSumReport) String() string {
