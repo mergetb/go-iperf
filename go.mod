@@ -1,4 +1,4 @@
-module github.com/BGrewell/go-iperf
+module github.com/mergetb/go-iperf
 
 go 1.15
 
